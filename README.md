@@ -55,6 +55,21 @@ environment running
 - Clone this repo
 - Clone the FE repo
 
+Gems Included: 
+
+- gem "pry-rails"
+- gem "rspec-rails"
+- gem "factory_bot_rails"
+- gem "faker"
+- gem "shoulda-matchers"
+- gem "capybara"
+- gem "faraday"
+- gem "webmock"
+- gem "vcr"
+
+    bundle install
+
+
 And repeat
 
     until finished
