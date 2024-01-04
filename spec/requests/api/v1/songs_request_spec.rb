@@ -7,5 +7,8 @@ describe "Song Selection" do
     get '/api/v1/songs'
 
     expect(response).to be_successful
+
+    songs = JSON.parse(response.body, symbolize_names: true)
+    
   end 
 end 

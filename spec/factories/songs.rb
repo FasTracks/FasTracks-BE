@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :song do
-    name { Faker::Music.album }
+    name { Faker::Music::Prince.song }
   end
 end
