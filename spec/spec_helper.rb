@@ -93,5 +93,5 @@ RSpec.configure do |config|
 =end
   require 'simplecov'
   require 'webmock/rspec'
-  require 'vcr'
+  # require 'vcr'
 end

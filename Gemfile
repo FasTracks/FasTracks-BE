@@ -57,5 +57,5 @@ end
 group :test do
   gem "simplecov"
   gem "webmock" 
-  gem "vcr"
+  # gem "vcr"
 end
