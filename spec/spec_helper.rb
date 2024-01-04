@@ -91,4 +91,7 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+  require 'simplecov'
+  require 'webmock/rspec'
+  # require 'vcr'
 end
