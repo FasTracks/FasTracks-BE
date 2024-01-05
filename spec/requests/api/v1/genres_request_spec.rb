@@ -44,7 +44,6 @@ describe "Genres API" do
     parsed_response = JSON.parse(response.body, symbolize_names: true)
     expect(parsed_response[:error][:message]).to eq("No token provided")  
     expect(parsed_response[:error][:status]).to eq(401)  
-    # require 'pry'; binding.pry
   end
 
   it "errors with a bad token" do
@@ -67,6 +66,5 @@ describe "Genres API" do
     parsed_response = JSON.parse(json_response, symbolize_names: true)
     expect(parsed_response[:error][:message]).to eq("Invalid access token")  
     expect(parsed_response[:error][:status]).to eq(401)  
-    # require 'pry'; binding.pry
   end
 end

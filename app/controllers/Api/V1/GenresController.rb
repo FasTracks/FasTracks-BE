@@ -21,17 +21,6 @@ class Api::V1::GenresController < ApplicationController
         json = JSON.parse(response.body, symbolize_names: true)
         @genres = json[:genres]
       end
-      # response = conn.get("v1/recommendations/available-genre-seeds")
-
-      # if response.body == ""
-      #   render json: {error: {message: "No token provided", status: 401}}
-      # end
-      # require 'pry'; binding.pry
-
-      # json = JSON.parse(response.body, symbolize_names: true)
-      # @genres = json[:genres]
-
-
     end
   end
 end
