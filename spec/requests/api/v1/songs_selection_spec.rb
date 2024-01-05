@@ -14,7 +14,7 @@ describe "Song Selection" do
            }).
          to_return(status: 200, body: json_response, headers: {})
 
-    get "/api/v1/songs?bearer=1234"
+    get "/api/v1/songs?bearer=1234&&workout=HIIT&&genre=pop"
 
     expect(response).to be_successful
 
