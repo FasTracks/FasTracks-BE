@@ -24,7 +24,18 @@ class Api::V1::SongsController < ApplicationController
       end
       #Make endpoint connection
       response = conn.get("v1/recommendations?limit=#{num_songs}&seed_genres=#{params[:genre]}&target_tempo=#{tempo}")
-      # json = JSON.parse(response.body, symbolize_names: true)
+      json = JSON.parse(response.body, symbolize_names: true)
+
+      return_value = ""
+      
+      json[:tracks].each do |track|
+        track[:artists].each do |artist|
+          return_value << artist[:name]
+        end
+        return_value << track[:name]
+      end
+      return_value 
+      require 'pry'; binding.pry
 
       if response.status == 401
         render json: { error: { message: "Invalid access token", status: 401 } }
@@ -35,14 +46,7 @@ class Api::V1::SongsController < ApplicationController
       else
         json = JSON.parse(response.body, symbolize_names: true)
       end
-      
-      # json[:tracks].each do |track|
-      #   track[:artists].each do |artist|
-      #     artist[:name]
-      #   end
-      #   track[:name]
-      # end
-      # require 'pry'; binding.pry
+
     end 
   end
 end

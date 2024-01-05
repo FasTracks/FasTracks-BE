@@ -17,11 +17,9 @@ describe "Song Selection" do
     get "/api/v1/songs?bearer=1234&&workout=HIIT&&genre=pop"
 
     expect(response).to be_successful
-    # require 'pry'; binding.pry
-    # expect(response).to be_json
-
+    
     parsed_response = JSON.parse(json_response, symbolize_names: true)
-
+    
     expect(parsed_response).to have_key(:tracks)
 
     parsed_response[:tracks].each do |track|
