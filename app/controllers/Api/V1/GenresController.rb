@@ -12,7 +12,6 @@ class Api::V1::GenresController < ApplicationController
       response = conn.get("v1/recommendations/available-genre-seeds")
 
       json = JSON.parse(response.body, symbolize_names: true)
-      @genres = json[:genres]
     end
   end
 end
