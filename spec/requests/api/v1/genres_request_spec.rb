@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe "Genres API" do
-  xit "sends a list of genres" do
+  it "sends a list of genres" do
     json_response = File.read('spec/fixtures/genre_requests/genres.json')
 
     stub_request(:get, "https://api.spotify.com/v1/recommendations/available-genre-seeds").
@@ -24,7 +24,7 @@ describe "Genres API" do
     expect(parsed_response[:genres].first).to be_a(String)
   end
 
-  xit "errors without a token" do
+  it "errors without a token" do
     json_response = File.read('spec/fixtures/genre_requests/genres_no_token.json')
 
     stub_request(:get, "https://api.spotify.com/v1/recommendations/available-genre-seeds").
@@ -39,11 +39,12 @@ describe "Genres API" do
 
     get '/api/v1/genres?bearer='
 
-    expect(response).to_not be_successful
+    expect(response).to be_successful
 
     parsed_response = JSON.parse(response.body, symbolize_names: true)
     expect(parsed_response[:error][:message]).to eq("No token provided")  
     expect(parsed_response[:error][:status]).to eq(401)  
+    # require 'pry'; binding.pry
   end
 
   it "errors with a bad token" do
@@ -61,11 +62,11 @@ describe "Genres API" do
 
     get "/api/v1/genres?bearer=1235"
 
-    # expect(response).to_not be_successful
+    expect(response).to be_successful
     
-    parsed_response = JSON.parse(response.body, symbolize_names: true)
+    parsed_response = JSON.parse(json_response, symbolize_names: true)
     expect(parsed_response[:error][:message]).to eq("Invalid access token")  
     expect(parsed_response[:error][:status]).to eq(401)  
-    require 'pry'; binding.pry
+    # require 'pry'; binding.pry
   end
 end
