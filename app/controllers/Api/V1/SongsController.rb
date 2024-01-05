@@ -26,11 +26,12 @@ class Api::V1::SongsController < ApplicationController
       response = conn.get("v1/recommendations?limit=#{num_songs}&seed_genres=#{params[:genre]}&target_tempo=#{tempo}")
       json = JSON.parse(response.body, symbolize_names: true)
       
-      track_uri = ""
       json[:tracks].each do |track|
-        track_uri = track[:uri]
+        track[:artists].each do |artist|
+          artist[:name]
+        end
+        track[:name]
       end
-      track_uri
       # require 'pry'; binding.pry
     end 
   end
