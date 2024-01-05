@@ -1,11 +1,11 @@
 class Api::V1::GenresController < ApplicationController
   def index
-    if params[:bearer] == ""
+    if params[:token] == ""
       render json: {error: {message: "No token provided", status: 401}}
-    elsif bearer = params[:bearer]
+    elsif bearer = params[:token]
 
       conn = Faraday.new(url: "https://api.spotify.com/") do |faraday|
-        faraday.headers['Authorization'] = "Bearer #{bearer}"
+        faraday.headers['Authorization'] = "Bearer #{token}"
         faraday.adapter Faraday.default_adapter 
       end
 
