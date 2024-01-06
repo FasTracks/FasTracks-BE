@@ -20,7 +20,7 @@ describe Api::V1::PlaylistsController, type: :controller do
     it "Retrieve a selection of songs based on input and passes data to #add_tracks" do
       allow(controller).to receive(:add_tracks)
 
-      get :songs, params: {token: 1234, workout: "HIIT", genre: "pop"}
+      post :songs, params: {token: 1234, workout: "HIIT", genre: "pop"}
 
       expect(controller).to have_received(:add_tracks).with(JSON.parse(@rec_response, symbolize_names: true))
     end
@@ -40,7 +40,7 @@ describe Api::V1::PlaylistsController, type: :controller do
           )
           .to_return(status: 401, body: json_response, headers: {})
 
-        get :songs, params: {token: nil, workout: "HIIT", genre: "pop"}
+        post :songs, params: {token: nil, workout: "HIIT", genre: "pop"}
 
         expect(response).to be_successful
 
@@ -63,7 +63,7 @@ describe Api::V1::PlaylistsController, type: :controller do
           )
           .to_return(status: 401, body: json_response, headers: {})
 
-        get :songs, params: {token: 1235, workout: "HIIT", genre: "pop"}
+        post :songs, params: {token: 1235, workout: "HIIT", genre: "pop"}
 
         expect(response).to be_successful
 
@@ -71,6 +71,20 @@ describe Api::V1::PlaylistsController, type: :controller do
         expect(parsed_response[:error][:message]).to eq("Invalid access token")
         expect(parsed_response[:error][:status]).to eq(401)
       end
+    end
+  end
+
+  describe "#add_tracks" do
+    before(:each) do
+
+    end
+
+    it "creates a playlist" do
+      # As a FE App,
+      # When I request to create a playlist,
+      # I need BE service to create a playlist with POST to users/{user_id}/playlists
+      # BE needs to fetch user_id with token at GET /me
+      # Then BE needs to fill playlist with track URIs
     end
   end
 end

@@ -1,4 +1,8 @@
 class SpotifyApiService
+  def self.create_playlist(token, name, description, public)
+
+  end
+
   def self.get_song_recommendations(token, seed_genres, target_tempo, limit)
     response = conn.get("recommendations?limit=#{limit}&seed_genres=#{seed_genres}&target_tempo=#{target_tempo}") do |req|
       req.headers["Authorization"] = "Bearer #{token}"
