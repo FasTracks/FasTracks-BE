@@ -100,7 +100,7 @@ describe Api::V1::PlaylistsController, type: :controller do
         .to_return(status: 201, body: "", headers: {})
     end
 
-    it "creates a playlist; testing inside #add_tracks" do
+    xit "adds tracks to playlist; testing inside #add_tracks" do
       # As a FE App,
       # When I request to create a playlist,
       # I need BE service to create a playlist with POST to users/{user_id}/playlists

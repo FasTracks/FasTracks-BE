@@ -44,7 +44,7 @@ describe "Spotify API service" do
     end
   end
 
-  it "get's a user (id)" do
+  it "gets a user (id)" do
     user_response = File.read("spec/fixtures/user/user.json")
 
     stub_request(:get, "https://api.spotify.com/v1/me")
