@@ -34,7 +34,7 @@ class Api::V1::SongsController < ApplicationController
       else
         json = JSON.parse(response.body, symbolize_names: true)
   
-        return_value = {}
+        track_and_artist_hash = {}
         playlist_duration_ms = 0
         
         json[:tracks].each do |track|
@@ -47,7 +47,7 @@ class Api::V1::SongsController < ApplicationController
         playlist_duration_minutes = playlist_duration_seconds / 60
         playlist_duration_remainder_seconds = (playlist_duration_seconds % 60).round(2)
         converted_duration = {duration:"#{playlist_duration_minutes}:#{playlist_duration_remainder_seconds}"}
-        playlist_data_hash = return_value.merge(converted_duration)
+        playlist_data_hash = track_and_artist_hash.merge(converted_duration)
       end
     end 
     x = JSON.generate(playlist_data_hash)
