@@ -1,6 +1,26 @@
 class SpotifyApiService
-  def self.create_playlist(token, name, description, public)
+  def self.create_playlist(token, user_id, name)
+    response = conn.post("users/#{user_id}/playlists") do |req|
+      req.headers["Authorization"] = "Bearer #{token}"
+      req.headers["Content-Type"] = "application/json"
+      req.body = {
+        "name" => name,
+        "public" => true,
+        "description" => "Playlist created by FasTracks on Spotify API"
+      }.to_json
+    end
 
+    response_conversion(response)
+  end
+
+  def self.add_tracks_to_playlist(token, id, track_uris)
+    response = conn.post("playlists/#{id}/tracks") do |req|
+      req.headers["Authorization"] = "Bearer #{token}"
+      req.headers["Content-Type"] = "application/json"
+      req.body = {uris: track_uris}.to_json
+    end
+
+    response_conversion(response)
   end
 
   def self.get_song_recommendations(token, seed_genres, target_tempo, limit)

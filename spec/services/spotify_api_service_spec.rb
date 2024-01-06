@@ -43,4 +43,18 @@ describe "Spotify API service" do
       end
     end
   end
+
+  it "get's a user (id)" do
+    user_response = File.read("spec/fixtures/user/user.json")
+
+    stub_request(:get, "https://api.spotify.com/v1/me")
+      .with(headers: {"Authorization" => "Bearer 1234"})
+      .to_return(status: 200, body: user_response, headers: {})
+
+    response = SpotifyApiService.get_user("1234")
+
+    expect(response[:status]).to eq 200
+
+    expect(response[:data]).to have_key(:id)
+  end
 end

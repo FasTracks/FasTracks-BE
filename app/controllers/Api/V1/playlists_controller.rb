@@ -47,9 +47,18 @@ class Api::V1::PlaylistsController < ApplicationController
   private
 
   def add_tracks(track_data)
-    # Need to create create a playlist
-    # playlist_response = SpotifyApiService.create_playlist(token: token, name: params[:name], description: params[:description], public: true)
+    token = params[:token]
 
+    user_id = SpotifyApiService.get_user(token)[:data][:id]
+    # Need to create create a playlist
+    playlist_response = SpotifyApiService.create_playlist(token, user_id, params[:playlist_name])
+    # convert track data to contiguous string
+    track_uris = track_data[:tracks].map { |track| "spotify:track:" + track[:id] }
+    # this returns a snapshot id
+    # perhaps we sad path (gracefully handle) for bad track_uris -- low criticality
+    SpotifyApiService.add_tracks_to_playlist(token, playlist_response[:data][:id], track_uris)
+
+    # need to add tracks to playlist
     # this is the POST body
     # {
     #     "uris": [
@@ -60,7 +69,6 @@ class Api::V1::PlaylistsController < ApplicationController
     # add tracks to playlist
 
     # def serve_new_playlist_with_tracks(playlist_id)
-    # Service call to get playlist
     # somehow serve playlist url back to FE
     # end
   end
