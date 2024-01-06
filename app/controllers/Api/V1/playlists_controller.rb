@@ -1,38 +1,45 @@
 class Api::V1::PlaylistsController < ApplicationController
   def songs
+    token = params[:token]
+    # set defual songs & tempo
+    num_songs = 10
+    tempo = 140
+
     # Check that bearer token is present
-    if params[:token] == ""
-      render json: {error: {message: "No token provided", status: 401}}
+    if token == "" || token.nil?
+      return render json: {error: {message: "No token provided", status: 401}}
     else
-      token = params[:token]
-      # Determine number of songs and tempo based on type of workout
-      if params[:workout] == "HIIT" || params[:workout] == "Strength"
+      case params[:workout]
+      when "HIIT", "Strength"
         num_songs = 10
         tempo = 140
-      elsif params[:workout] == "Restore" || params[:workout] == "Yoga"
+      when "Restore", "Yoga"
         num_songs = 10
         tempo = 80
-      elsif params[:workout] == "Endurance"
+      when "Endurance"
         num_songs = 20
         tempo = 120
       else
-        render json: {error: {message: "Invalid Workout Provided", status: 422}}
+        return render json: {error: {message: "Invalid Workout Provided", status: 422}}
       end
+    end
 
-      # Making Faraday connection
-      response = SpotifyApiService.get_song_recommendations(
-        token, params[:genre], tempo, num_songs
-      )
-      # Determine error status
-      if response[:status] == 401
+    # Making Faraday connection
+    response = SpotifyApiService.get_song_recommendations(
+      token, params[:genre], tempo, num_songs
+    )
+
+    if response[:status] == 200
+      # Send songs recs over to #add_tracks controller action
+      add_tracks(response[:data])
+    else
+      case response[:status]
+      when 401
         render json: {error: {message: "Invalid access token", status: 401}}
-      elsif response[:status] == 404
+      when 404
         render json: {error: {message: "Not Found", status: 404}}
-      elsif response[:status] != 200
-        render json: {error: {message: "Unexpected error", status: response[:status]}}
       else
-        # Send songs recs over to #add_tracks controller action
-        add_tracks(response[:data])
+        render json: {error: {message: "Unexpected error", status: response[:status]}}
       end
     end
   end
