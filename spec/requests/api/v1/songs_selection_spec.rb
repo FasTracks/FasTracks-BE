@@ -20,6 +20,9 @@ describe Api::V1::PlaylistsController, type: :controller do
     it "Retrieve a selection of songs based on input and passes data to #add_tracks" do
       allow(controller).to receive(:add_tracks)
 
+      # Set the request content type to JSON
+      request.headers["Content-Type"] = "application/json"
+
       post :songs, params: {token: 1234, workout: "HIIT", genre: "pop"}
 
       expect(controller).to have_received(:add_tracks).with(JSON.parse(@rec_response, symbolize_names: true))
