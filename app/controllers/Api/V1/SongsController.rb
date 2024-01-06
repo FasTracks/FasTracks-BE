@@ -24,19 +24,7 @@ class Api::V1::SongsController < ApplicationController
       end
       #Make endpoint connection
       response = conn.get("v1/recommendations?limit=#{num_songs}&seed_genres=#{params[:genre]}&target_tempo=#{tempo}")
-      json = JSON.parse(response.body, symbolize_names: true)
-
-      return_value = ""
       
-      json[:tracks].each do |track|
-        track[:artists].each do |artist|
-          return_value << artist[:name]
-        end
-        return_value << track[:name]
-      end
-      return_value 
-      require 'pry'; binding.pry
-
       if response.status == 401
         render json: { error: { message: "Invalid access token", status: 401 } }
       elsif response.status == 404
@@ -45,8 +33,23 @@ class Api::V1::SongsController < ApplicationController
         render json: { error: { message: "Unexpected error", status: response.status } }
       else
         json = JSON.parse(response.body, symbolize_names: true)
+  
+        return_value = {}
+        playlist_duration_ms = 0
+        
+        json[:tracks].each do |track|
+          playlist_duration_ms += track[:duration_ms]
+          track_name = track[:name]
+          artist_names = track[:artists].map { |artist| artist[:name] }
+          track_and_artist_hash[track_name] = artist_names
+        end
+        playlist_duration_seconds = playlist_duration_ms / 1000
+        playlist_duration_minutes = playlist_duration_seconds / 60
+        playlist_duration_remainder_seconds = (playlist_duration_seconds % 60).round(2)
+        converted_duration = {duration:"#{playlist_duration_minutes}:#{playlist_duration_remainder_seconds}"}
+        playlist_data_hash = return_value.merge(converted_duration)
       end
-
     end 
+    x = JSON.generate(playlist_data_hash)
   end
 end
