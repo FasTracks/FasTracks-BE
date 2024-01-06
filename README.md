@@ -55,12 +55,34 @@ environment running
 - Clone this repo
 - Clone the FE repo
 
+Gems Included: 
+
+- gem "pry-rails"
+- gem "rspec-rails"
+- gem "factory_bot_rails"
+- gem "faker"
+- gem "shoulda-matchers"
+- gem "capybara"
+- gem "faraday"
+- gem "webmock"
+- gem "vcr"
+
+    bundle install
+
+
 And repeat
 
     until finished
 
 End with an example of getting some data out of the system or using it
 for a little demo
+
+Request an access token:
+
+curl -X POST "https://accounts.spotify.com/api/token" \
+     -H "Content-Type: application/x-www-form-urlencoded" \
+     -d "grant_type=client_credentials&client_id=your-client-id&client_secret=your-client-secret"
+
 
 ## Running the tests
 
