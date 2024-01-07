@@ -1,0 +1,15 @@
+{
+  "display_name": "test",
+  "external_urls": {
+    "spotify": "https://open.spotify.com/user/31nantjxmjfmry3ogfhzrffdwveu"
+  },
+  "href": "https://api.spotify.com/v1/users/31nantjxmjfmry3ogfhzrffdwveu",
+  "id": "31nantjxmjfmry3ogfhzrffdwveu",
+  "images": [],
+  "type": "user",
+  "uri": "spotify:user:31nantjxmjfmry3ogfhzrffdwveu",
+  "followers": {
+    "href": null,
+    "total": 0
+  }
+}

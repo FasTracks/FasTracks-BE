@@ -4,5 +4,6 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
-  get "/api/v1/genres", to: "api/v1/genres#index"
+  # get "/api/v1/genres", to: "api/v1/genres#index"
+  post "/api/v1/playlists", to: "api/v1/playlists#songs"
 end

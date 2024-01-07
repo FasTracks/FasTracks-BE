@@ -1,0 +1,39 @@
+{
+  "collaborative": false,
+  "description": "New playlist description",
+  "external_urls": {
+    "spotify": "https://open.spotify.com/playlist/3aiGyZ4yHCddV1XDf1Dxd9"
+  },
+  "followers": {
+    "href": null,
+    "total": 0
+  },
+  "href": "https://api.spotify.com/v1/playlists/3aiGyZ4yHCddV1XDf1Dxd9",
+  "id": "3aiGyZ4yHCddV1XDf1Dxd9",
+  "images": [],
+  "name": "New Playlist",
+  "owner": {
+    "display_name": "Kameron Kennedy",
+    "external_urls": {
+      "spotify": "https://open.spotify.com/user/kameronk92"
+    },
+    "href": "https://api.spotify.com/v1/users/kameronk92",
+    "id": "kameronk92",
+    "type": "user",
+    "uri": "spotify:user:kameronk92"
+  },
+  "primary_color": null,
+  "public": false,
+  "snapshot_id": "MSw4YTczOWFmZWRmZjg1OTUyYTUwODk5MDExMWRlNzU2ZjM0MzI5NTFi",
+  "tracks": {
+    "href": "https://api.spotify.com/v1/playlists/3aiGyZ4yHCddV1XDf1Dxd9/tracks",
+    "items": [],
+    "limit": 100,
+    "next": null,
+    "offset": 0,
+    "previous": null,
+    "total": 0
+  },
+  "type": "playlist",
+  "uri": "spotify:playlist:3aiGyZ4yHCddV1XDf1Dxd9"
+}
