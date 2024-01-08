@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SpotifyApiService
   def self.create_playlist(token, user_id, name)
     response = conn.post("users/#{user_id}/playlists") do |req|

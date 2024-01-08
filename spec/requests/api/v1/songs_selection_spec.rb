@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Api::V1::PlaylistsController, type: :controller do
@@ -79,7 +81,7 @@ describe Api::V1::PlaylistsController, type: :controller do
 
   describe '#add_tracks' do
     before(:each) do
-      user_response = File.read('spec/fixtures/user/user.json')
+      File.read('spec/fixtures/user/user.json')
 
       stub_request(:get, 'https://api.spotify.com/v1/me')
         .with(headers: { 'Authorization' => 'Bearer 1234' })

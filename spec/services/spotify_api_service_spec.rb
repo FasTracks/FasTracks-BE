@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe SpotifyApiService do
@@ -55,15 +57,16 @@ describe SpotifyApiService do
       it 'can get song recommendations' do
         response_stub = File.read('spec/fixtures/songs_selection/songs.json')
 
-        stub_request(:get, "https://api.spotify.com/v1/recommendations?limit=10&seed_genres=pop&target_tempo=140").
-         with(
-           headers: {
-          'Accept'=>'*/*',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization'=>'Bearer 1234',
-          'User-Agent'=>'Faraday v2.8.1'
-           }).
-         to_return(status: 200, body: response_stub, headers: {})
+        stub_request(:get, 'https://api.spotify.com/v1/recommendations?limit=10&seed_genres=pop&target_tempo=140')
+          .with(
+            headers: {
+              'Accept' => '*/*',
+              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+              'Authorization' => 'Bearer 1234',
+              'User-Agent' => 'Faraday v2.8.1'
+            }
+          )
+          .to_return(status: 200, body: response_stub, headers: {})
         songs = SpotifyApiService.get_song_recommendations('1234', 'pop', '140', '10')
         expect(songs).to be_a(Hash)
         expect(songs).to have_key(:data)
@@ -77,16 +80,17 @@ describe SpotifyApiService do
     context '#get_user' do
       it 'retrieves a user ID' do
         user = File.read('spec/fixtures/user/user.json')
-        
-        stub_request(:get, "https://api.spotify.com/v1/me").
-        with(
-          headers: {
-         'Accept'=>'*/*',
-         'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-         'Authorization'=>'Bearer 1234',
-         'User-Agent'=>'Faraday v2.8.1'
-          }).
-        to_return(status: 200, body: user, headers: {})
+
+        stub_request(:get, 'https://api.spotify.com/v1/me')
+          .with(
+            headers: {
+              'Accept' => '*/*',
+              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+              'Authorization' => 'Bearer 1234',
+              'User-Agent' => 'Faraday v2.8.1'
+            }
+          )
+          .to_return(status: 200, body: user, headers: {})
 
         user_id = SpotifyApiService.get_user('1234')
         expect(user_id).to be_a(Hash)
@@ -109,7 +113,7 @@ describe SpotifyApiService do
               'User-Agent' => 'Faraday v2.8.1'
             }
           )
-        .to_return(status: 200, body: json_response, headers: {})
+          .to_return(status: 200, body: json_response, headers: {})
 
         genres = SpotifyApiService.get_genres('1234')
         expect(genres).to be_a(Hash)
