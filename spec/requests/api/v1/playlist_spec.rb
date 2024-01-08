@@ -16,7 +16,7 @@ describe Api::V1::PlaylistsController, type: :controller do
       .to_return(status: 200, body: @rec_response, headers: {})
   end
 
-  describe "#songs" do
+  describe "#generate" do
     it "Retrieve a selection of songs based on input and passes data to #add_tracks" do
       allow(controller).to receive(:add_tracks)
 

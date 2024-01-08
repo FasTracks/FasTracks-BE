@@ -15,11 +15,11 @@ class SpotifyApiService
 
   def self.add_tracks_to_playlist(token, id, track_uris)
     response = conn.post("playlists/#{id}/tracks") do |req|
-      req.headers["Authorization"] = "Bearer #{token}"
-      req.headers["Content-Type"] = "application/json"
-      req.body = {uris: track_uris}.to_json
-    end
-
+    req.headers["Authorization"] = "Bearer #{token}"
+    req.headers["Content-Type"] = "application/json"
+    req.body = {uris: track_uris}.to_json
+  end
+  
     response_conversion(response)
   end
 

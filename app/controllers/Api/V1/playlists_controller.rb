@@ -29,7 +29,7 @@ class Api::V1::PlaylistsController < ApplicationController
 
     if tracks_response[:status] == 200
       # Send songs recs over to #add_tracks controller action
-      playlist_response = SpotifyFacade.generate_spotify_playlist(token, tracks_response[:data])
+      playlist_response = SpotifyFacade.generate_spotify_playlist(token, tracks_response[:data], "FasTracks #{params[:workout]} #{params[:genre]}")
 
       render json: playlist_response
     else
