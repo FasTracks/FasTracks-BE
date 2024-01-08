@@ -19,7 +19,7 @@ class SpotifyApiService
     req.headers["Content-Type"] = "application/json"
     req.body = {uris: track_uris}.to_json
   end
-  
+
     response_conversion(response)
   end
 

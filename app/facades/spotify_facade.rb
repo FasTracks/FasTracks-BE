@@ -5,7 +5,7 @@ class SpotifyFacade
     track_uris = []
 
     if response[:status] == 200
-      track_uris = response[:data][:tracks].map { |track| "spotify:track:" + track[:id] }
+      track_uris = convert_track_uris(response[:data][:tracks])
     end
 
     {status: response[:status], data: track_uris}
@@ -19,5 +19,9 @@ class SpotifyFacade
     SpotifyApiService.add_tracks_to_playlist(token, playlist_id, track_uris)
     # returns {status: ###, data: <playlist JSON>}
     return SpotifyApiService.get_playlist(token, playlist_id)
+  end
+
+  def self.convert_track_uris(tracks)
+    tracks.map { |track| track[:uri] }
   end
 end

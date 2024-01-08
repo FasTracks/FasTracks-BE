@@ -17,15 +17,53 @@ describe Api::V1::PlaylistsController, type: :controller do
   end
 
   describe "#generate" do
-    it "Retrieve a selection of songs based on input and passes data to #add_tracks" do
-      allow(controller).to receive(:add_tracks)
+    before(:each) do
+      user_response = File.read("spec/fixtures/user/user.json")
 
+      stub_request(:get, "https://api.spotify.com/v1/me")
+        .with(headers: {"Authorization" => "Bearer 1234"})
+        .to_return(status: 200, body: {id: "12345"}.to_json, headers: {})
+
+      stub_request(:post, "https://api.spotify.com/v1/users/12345/playlists")
+        .with(
+          headers: {"Authorization" => "Bearer 1234", "Content-Type" => "application/json"},
+          body: "{\"name\":\"FasTracks HIIT pop\",\"public\":true,\"description\":\"Playlist created by FasTracks on Spotify API\"}"
+        )
+        .to_return(status: 201, body: {id: "testID"}.to_json, headers: {})
+
+      stub_request(:post, "https://api.spotify.com/v1/playlists/testID/tracks")
+        .with(
+          headers: {"Authorization" => "Bearer 1234", "Content-Type" => "application/json"},
+          body: {uris: SpotifyFacade.convert_track_uris(JSON.parse(@rec_response, symbolize_names: true)[:tracks])}.to_json
+        )
+        .to_return(status: 201, body: "".to_json, headers: {})
+      # stubbing GET playlists
+      playlist = File.read("spec/fixtures/playlists/get_playlist.json")
+        
+      stub_request(:get, "https://api.spotify.com/v1/playlists/testID")
+      .with(
+        headers: {"Authorization" => "Bearer 1234"}
+        )
+      .to_return(status: 200, body: playlist, headers: {})
+    end
+
+    it "hands off playlist generation to the facade" do
+      # As a FE App,
+      # When I request to create a playlist,
+      # I need BE service to create a playlist with POST to users/{user_id}/playlists
+      # BE needs to fetch user_id with token at GET /me
+      # then needs to create a playlist
+      # Then BE needs to fill playlist with track URIs
       # Set the request content type to JSON
       request.headers["Content-Type"] = "application/json"
 
-      post :songs, params: {token: "1234", workout: "HIIT", genre: "pop"}
+      post :generate, params: {token: "1234", workout: "HIIT", genre: "pop", playlist_name: "FT HIIT Pop"}
 
-      expect(controller).to have_received(:add_tracks).with(JSON.parse(@rec_response, symbolize_names: true))
+      parsed_response = JSON.parse(response.body, symbolize_names: true)
+      expect(parsed_response).to have_key(:data)
+      expect(parsed_response).to have_key(:status)
+      expect(parsed_response[:data]).to have_key(:id)
+      expect(parsed_response[:data]).to have_key(:href)
     end
 
     context "sad tokens" do
@@ -43,7 +81,7 @@ describe Api::V1::PlaylistsController, type: :controller do
           )
           .to_return(status: 401, body: json_response, headers: {})
 
-        post :songs, params: {token: nil, workout: "HIIT", genre: "pop"}
+        post :generate, params: {token: nil, workout: "HIIT", genre: "pop"}
 
         expect(response).to be_successful
 
@@ -66,7 +104,7 @@ describe Api::V1::PlaylistsController, type: :controller do
           )
           .to_return(status: 401, body: json_response, headers: {})
 
-        post :songs, params: {token: 1235, workout: "HIIT", genre: "pop"}
+        post :generate, params: {token: 1235, workout: "HIIT", genre: "pop"}
 
         expect(response).to be_successful
 
@@ -74,41 +112,6 @@ describe Api::V1::PlaylistsController, type: :controller do
         expect(parsed_response[:error][:message]).to eq("Invalid access token")
         expect(parsed_response[:error][:status]).to eq(401)
       end
-    end
-  end
-
-  describe "#add_tracks" do
-    before(:each) do
-      user_response = File.read("spec/fixtures/user/user.json")
-
-      stub_request(:get, "https://api.spotify.com/v1/me")
-        .with(headers: {"Authorization" => "Bearer 1234"})
-        .to_return(status: 200, body: {id: "12345"}.to_json, headers: {})
-
-      stub_request(:post, "https://api.spotify.com/v1/users/12345/playlists")
-        .with(
-          headers: {"Authorization" => "Bearer 1234", "Content-Type" => "application/json"},
-          body: "{\"name\":\"FT HIIT Pop\",\"public\":true,\"description\":\"Playlist created by FasTracks on Spotify API\"}"
-        )
-        .to_return(status: 201, body: {id: "testID"}.to_json, headers: {})
-
-      stub_request(:post, "https://api.spotify.com/v1/playlists/testID/tracks")
-        .with(
-          headers: {"Authorization" => "Bearer 1234", "Content-Type" => "application/json"},
-          body: "{\"uris\":[\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\"]}"
-        )
-        .to_return(status: 201, body: "", headers: {})
-    end
-
-    xit "adds tracks to playlist; testing inside #add_tracks" do
-      # As a FE App,
-      # When I request to create a playlist,
-      # I need BE service to create a playlist with POST to users/{user_id}/playlists
-      # BE needs to fetch user_id with token at GET /me
-      # Then BE needs to fill playlist with track URIs
-      post :songs, params: {token: "1234", workout: "HIIT", genre: "pop", playlist_name: "FT HIIT Pop"}
-
-
     end
   end
 end
