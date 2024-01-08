@@ -1,15 +1,33 @@
 {
-  "display_name": "test",
+  "display_name": "Kameron Kennedy",
   "external_urls": {
-    "spotify": "https://open.spotify.com/user/31nantjxmjfmry3ogfhzrffdwveu"
+    "spotify": "https://open.spotify.com/user/kameronk92"
   },
-  "href": "https://api.spotify.com/v1/users/31nantjxmjfmry3ogfhzrffdwveu",
-  "id": "31nantjxmjfmry3ogfhzrffdwveu",
-  "images": [],
+  "href": "https://api.spotify.com/v1/users/kameronk92",
+  "id": "kameronk92",
+  "images": [
+    {
+      "url": "https://scontent-ord5-1.xx.fbcdn.net/v/t1.18169-1/13310354_10209723721596157_3646736982241811503_n.jpg?stp=cp0_dst-jpg_p50x50&_nc_cat=105&ccb=1-7&_nc_sid=db1b99&_nc_ohc=eifY9j-_wEAAX-fEt0N&_nc_ht=scontent-ord5-1.xx&edm=AP4hL3IEAAAA&oh=00_AfBKpU-8SOHG9S2FsmFyeohueezDBkYXvptwkG7dlZrsVw&oe=65C27AB8",
+      "height": 64,
+      "width": 64
+    },
+    {
+      "url": "https://scontent-ord5-1.xx.fbcdn.net/v/t1.18169-1/13310354_10209723721596157_3646736982241811503_n.jpg?stp=dst-jpg_s320x320&_nc_cat=105&ccb=1-7&_nc_sid=0be577&_nc_ohc=eifY9j-_wEAAX-fEt0N&_nc_ht=scontent-ord5-1.xx&edm=AP4hL3IEAAAA&oh=00_AfAoevSA3pFc0JP4RWNGKX4o9zIyxqVOSvGMOoxQYBS2JA&oe=65C27AB8",
+      "height": 300,
+      "width": 300
+    }
+  ],
   "type": "user",
-  "uri": "spotify:user:31nantjxmjfmry3ogfhzrffdwveu",
+  "uri": "spotify:user:kameronk92",
   "followers": {
     "href": null,
-    "total": 0
-  }
+    "total": 31
+  },
+  "country": "US",
+  "product": "premium",
+  "explicit_content": {
+    "filter_enabled": false,
+    "filter_locked": false
+  },
+  "email": "fake@gmail.com"
 }

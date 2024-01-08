@@ -6,22 +6,20 @@ class Api::V1::PlaylistsController < ApplicationController
     tempo = 140
 
     # Check that bearer token is present
-    if token == "" || token.nil?
-      return render json: {error: {message: "No token provided", status: 401}}
+    return render json: { error: { message: 'No token provided', status: 401 } } if token == '' || token.nil?
+
+    case params[:workout]
+    when 'HIIT', 'Strength'
+      num_songs = 10
+      tempo = 140
+    when 'Restore', 'Yoga'
+      num_songs = 10
+      tempo = 80
+    when 'Endurance'
+      num_songs = 20
+      tempo = 120
     else
-      case params[:workout]
-      when "HIIT", "Strength"
-        num_songs = 10
-        tempo = 140
-      when "Restore", "Yoga"
-        num_songs = 10
-        tempo = 80
-      when "Endurance"
-        num_songs = 20
-        tempo = 120
-      else
-        return render json: {error: {message: "Invalid Workout Provided", status: 422}}
-      end
+      return render json: { error: { message: 'Invalid Workout Provided', status: 422 } }
     end
 
     # Making Faraday connection
@@ -35,11 +33,11 @@ class Api::V1::PlaylistsController < ApplicationController
     else
       case response[:status]
       when 401
-        render json: {error: {message: "Invalid access token", status: 401}}
+        render json: { error: { message: 'Invalid access token', status: 401 } }
       when 404
-        render json: {error: {message: "Not Found", status: 404}}
+        render json: { error: { message: 'Not Found', status: 404 } }
       else
-        render json: {error: {message: "Unexpected error", status: response[:status]}}
+        render json: { error: { message: 'Unexpected error', status: response[:status] } }
       end
     end
   end
@@ -53,7 +51,7 @@ class Api::V1::PlaylistsController < ApplicationController
     # Need to create create a playlist
     playlist_response = SpotifyApiService.create_playlist(token, user_id, params[:playlist_name])
     # convert track data to contiguous string
-    track_uris = track_data[:tracks].map { |track| "spotify:track:" + track[:id] }
+    track_uris = track_data[:tracks].map { |track| 'spotify:track:' + track[:id] }
     # this returns a snapshot id
     # perhaps we sad path (gracefully handle) for bad track_uris -- low criticality
     SpotifyApiService.add_tracks_to_playlist(token, playlist_response[:data][:id], track_uris)
