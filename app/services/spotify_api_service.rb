@@ -23,6 +23,14 @@ class SpotifyApiService
     response_conversion(response)
   end
 
+  def self.get_playlist(token, playlist_id)
+    response = conn.get("playlists/#{playlist_id}") do |req|
+      req.headers["Authorization"] = "Bearer #{token}"
+    end
+
+    response_conversion(response)
+  end
+
   def self.get_song_recommendations(token, seed_genres, target_tempo, limit)
     response = conn.get("recommendations?limit=#{limit}&seed_genres=#{seed_genres}&target_tempo=#{target_tempo}") do |req|
       req.headers["Authorization"] = "Bearer #{token}"
@@ -32,31 +40,20 @@ class SpotifyApiService
   end
 
   def self.get_user(token)
-    begin
-      response = conn.get("me") do |req|
-        req.headers["Authorization"] = "Bearer #{token}"
-      end
-
-      response_conversion(response)
+    response = conn.get("me") do |req|
+      req.headers["Authorization"] = "Bearer #{token}"
     end
-  rescue Faraday::Error => e
-    # You can handle errors here (4xx/5xx responses, timeouts, etc.)
-    puts e.response[:status]
-    puts e.response[:body]
+
+    response_conversion(response)
   end
 
   def self.get_genres(token)
-    begin
-      response = conn.get("recommendations/available-genre-seeds") do |req|
-        req.headers["Authorization"] = "Bearer #{token}"
-      end
-
-      response_conversion(response)
+    response = conn.get("recommendations/available-genre-seeds") do |req|
+      req.headers["Authorization"] = "Bearer #{token}"
     end
-  rescue Faraday::Error => e
-    # You can handle errors here (4xx/5xx responses, timeouts, etc.)
-    puts e.response[:status]
-    puts e.response[:body]
+
+    response_conversion(response)
+
   end
 
   def self.account_connection
