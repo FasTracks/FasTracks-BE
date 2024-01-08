@@ -53,7 +53,6 @@ class SpotifyApiService
     end
 
     response_conversion(response)
-
   end
 
   def self.account_connection

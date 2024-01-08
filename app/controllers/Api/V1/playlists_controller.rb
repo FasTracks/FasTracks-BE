@@ -1,7 +1,7 @@
 class Api::V1::PlaylistsController < ApplicationController
   def generate
     token = params[:token]
-    # set defual songs & tempo
+    # set default songs & tempo
     num_songs = 10
     tempo = 140
 
@@ -26,21 +26,18 @@ class Api::V1::PlaylistsController < ApplicationController
 
     # Making Faraday connection
     tracks_response = SpotifyFacade.get_song_recommendations(token, params[:genre], tempo, num_songs)
-
-    if tracks_response[:status] == 200
+    case tracks_response[:status]
+    when 200
       # Send songs recs over to #add_tracks controller action
       playlist_response = SpotifyFacade.generate_spotify_playlist(token, tracks_response[:data], "FasTracks #{params[:workout]} #{params[:genre]}")
 
       render json: playlist_response
+    when 401
+      render json: {error: {message: "Invalid access token", status: 401}}
+    when 404
+      render json: {error: {message: "Not Found", status: 404}}
     else
-      case tracks_response[:status]
-      when 401
-        render json: {error: {message: "Invalid access token", status: 401}}
-      when 404
-        render json: {error: {message: "Not Found", status: 404}}
-      else
-        render json: {error: {message: "Unexpected error", status: tracks_response[:status]}}
-      end
+      render json: {error: {message: "Unexpected error", status: tracks_response[:status]}}
     end
   end
 end

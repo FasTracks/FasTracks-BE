@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe SpotifyFacade do
   before(:each) do
     @rec_response = File.read("spec/fixtures/songs_selection/songs.json")
-
+    # GET song recommendations
     stub_request(:get, "https://api.spotify.com/v1/recommendations?limit=10&seed_genres=pop&target_tempo=140")
       .with(
         headers: {
