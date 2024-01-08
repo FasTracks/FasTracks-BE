@@ -14,39 +14,37 @@ describe Api::V1::PlaylistsController, type: :controller do
         }
       )
       .to_return(status: 200, body: @rec_response, headers: {})
-  end
 
-  describe "#generate" do
-    before(:each) do
-      user_response = File.read("spec/fixtures/user/user.json")
+    user_response = File.read("spec/fixtures/user/user.json")
 
-      stub_request(:get, "https://api.spotify.com/v1/me")
-        .with(headers: {"Authorization" => "Bearer 1234"})
-        .to_return(status: 200, body: {id: "12345"}.to_json, headers: {})
+    stub_request(:get, "https://api.spotify.com/v1/me")
+      .with(headers: {"Authorization" => "Bearer 1234"})
+      .to_return(status: 200, body: {id: "1234"}.to_json, headers: {})
 
-      stub_request(:post, "https://api.spotify.com/v1/users/12345/playlists")
-        .with(
-          headers: {"Authorization" => "Bearer 1234", "Content-Type" => "application/json"},
-          body: "{\"name\":\"FasTracks HIIT pop\",\"public\":true,\"description\":\"Playlist created by FasTracks on Spotify API\"}"
-        )
-        .to_return(status: 201, body: {id: "testID"}.to_json, headers: {})
+    stub_request(:post, "https://api.spotify.com/v1/users/1234/playlists")
+      .with(
+        headers: {"Authorization" => "Bearer 1234", "Content-Type" => "application/json"},
+        body: "{\"name\":\"FasTracks HIIT pop\",\"public\":true,\"description\":\"Playlist created by FasTracks on Spotify API\"}"
+      )
+      .to_return(status: 201, body: {id: "testID"}.to_json, headers: {})
 
-      stub_request(:post, "https://api.spotify.com/v1/playlists/testID/tracks")
-        .with(
-          headers: {"Authorization" => "Bearer 1234", "Content-Type" => "application/json"},
-          body: {uris: SpotifyFacade.convert_track_uris(JSON.parse(@rec_response, symbolize_names: true)[:tracks])}.to_json
-        )
-        .to_return(status: 201, body: "".to_json, headers: {})
-      # stubbing GET playlists
-      playlist = File.read("spec/fixtures/playlists/get_playlist.json")
-        
-      stub_request(:get, "https://api.spotify.com/v1/playlists/testID")
+    stub_request(:post, "https://api.spotify.com/v1/playlists/testID/tracks")
+      .with(
+        headers: {"Authorization" => "Bearer 1234", "Content-Type" => "application/json"},
+        body: {uris: SpotifyFacade.convert_track_uris(JSON.parse(@rec_response, symbolize_names: true)[:tracks])}.to_json
+      )
+      .to_return(status: 201, body: "".to_json, headers: {})
+    # stubbing GET playlists
+    playlist = File.read("spec/fixtures/playlists/get_playlist.json")
+      
+    stub_request(:get, "https://api.spotify.com/v1/playlists/testID")
       .with(
         headers: {"Authorization" => "Bearer 1234"}
         )
       .to_return(status: 200, body: playlist, headers: {})
-    end
+  end
 
+  describe "#generate" do
     it "hands off playlist generation to the facade" do
       # As a FE App,
       # When I request to create a playlist,
@@ -56,8 +54,44 @@ describe Api::V1::PlaylistsController, type: :controller do
       # Then BE needs to fill playlist with track URIs
       # Set the request content type to JSON
       request.headers["Content-Type"] = "application/json"
+      workout = "HIIT"
+      post :generate, params: {token: "1234", workout: workout, genre: "pop", playlist_name: "FT #{workout} Pop"}
 
-      post :generate, params: {token: "1234", workout: "HIIT", genre: "pop", playlist_name: "FT HIIT Pop"}
+      parsed_response = JSON.parse(response.body, symbolize_names: true)
+      expect(parsed_response).to have_key(:data)
+      expect(parsed_response).to have_key(:status)
+      expect(parsed_response[:data]).to have_key(:id)
+      expect(parsed_response[:data]).to have_key(:href)
+    end
+
+    it "handles restore and yoga workouts" do
+      stub_request(:post, "https://api.spotify.com/v1/users/1234/playlists")
+      .with(
+        headers: {"Authorization" => "Bearer 1234", "Content-Type" => "application/json"},
+        body: "{\"name\":\"FasTracks Yoga pop\",\"public\":true,\"description\":\"Playlist created by FasTracks on Spotify API\"}"
+      )
+      .to_return(status: 201, body: {id: "testID"}.to_json, headers: {})
+
+      workout = "Yoga"
+      post :generate, params: {token: "1234", workout: workout, genre: "pop", playlist_name: "FT #{workout} Pop"}
+
+      parsed_response = JSON.parse(response.body, symbolize_names: true)
+      expect(parsed_response).to have_key(:data)
+      expect(parsed_response).to have_key(:status)
+      expect(parsed_response[:data]).to have_key(:id)
+      expect(parsed_response[:data]).to have_key(:href)
+    end
+
+    it "handles endurance workouts" do
+      stub_request(:post, "https://api.spotify.com/v1/users/1234/playlists")
+      .with(
+        headers: {"Authorization" => "Bearer 1234", "Content-Type" => "application/json"},
+        body: "{\"name\":\"FasTracks Endurance pop\",\"public\":true,\"description\":\"Playlist created by FasTracks on Spotify API\"}"
+      )
+      .to_return(status: 201, body: {id: "testID"}.to_json, headers: {})
+
+      workout = "Endurance"
+      post :generate, params: {token: "1234", workout: workout, genre: "pop", playlist_name: "FT #{workout} Pop"}
 
       parsed_response = JSON.parse(response.body, symbolize_names: true)
       expect(parsed_response).to have_key(:data)
