@@ -15,9 +15,17 @@ class SpotifyApiService
 
   def self.add_tracks_to_playlist(token, id, track_uris)
     response = conn.post("playlists/#{id}/tracks") do |req|
+    req.headers["Authorization"] = "Bearer #{token}"
+    req.headers["Content-Type"] = "application/json"
+    req.body = {uris: track_uris}.to_json
+  end
+
+    response_conversion(response)
+  end
+
+  def self.get_playlist(token, playlist_id)
+    response = conn.get("playlists/#{playlist_id}") do |req|
       req.headers["Authorization"] = "Bearer #{token}"
-      req.headers["Content-Type"] = "application/json"
-      req.body = {uris: track_uris}.to_json
     end
 
     response_conversion(response)
@@ -32,31 +40,19 @@ class SpotifyApiService
   end
 
   def self.get_user(token)
-    begin
-      response = conn.get("me") do |req|
-        req.headers["Authorization"] = "Bearer #{token}"
-      end
-
-      response_conversion(response)
+    response = conn.get("me") do |req|
+      req.headers["Authorization"] = "Bearer #{token}"
     end
-  rescue Faraday::Error => e
-    # You can handle errors here (4xx/5xx responses, timeouts, etc.)
-    puts e.response[:status]
-    puts e.response[:body]
+
+    response_conversion(response)
   end
 
   def self.get_genres(token)
-    begin
-      response = conn.get("recommendations/available-genre-seeds") do |req|
-        req.headers["Authorization"] = "Bearer #{token}"
-      end
-
-      response_conversion(response)
+    response = conn.get("recommendations/available-genre-seeds") do |req|
+      req.headers["Authorization"] = "Bearer #{token}"
     end
-  rescue Faraday::Error => e
-    # You can handle errors here (4xx/5xx responses, timeouts, etc.)
-    puts e.response[:status]
-    puts e.response[:body]
+
+    response_conversion(response)
   end
 
   def self.account_connection
