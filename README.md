@@ -124,14 +124,11 @@ repository](https://github.com/PurpleBooth/a-good-readme-template/tags).
 
 ## Authors
 
-  - **Billie Thompson** - *Provided README Template* -
-    [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of
-[contributors](https://github.com/PurpleBooth/a-good-readme-template/contributors)
-who participated in this project.
-
-Add LinkedIn Links*
+  - **Edward Avery Rodriguez** - *[LinkedIn](https://www.linkedin.com/in/edward-avery-rodriguez/), [GitHub](https://github.com/TheAveryRodriguez)* 
+  - **Kameron Kennedy** - *[LinkedIn](https://www.linkedin.com/in/kameron-kennedy-pe/), [GitHub](https://github.com/kameronk92)* 
+  - **Scott DeVoss** - *[LinkedIn](https://www.linkedin.com/in/scott-devoss/), [GitHub](https://github.com/scottdevoss)* 
+  - **Sooyung Kim** - *[LinkedIn](https://www.linkedin.com/in/sooyung-kim/), [GitHub](https://github.com/skim1027)* 
+  - **Taylor Pubins** - *[LinkedIn](https://www.linkedin.com/in/trpubins/), [GitHub](https://github.com/trpubz)* 
 
 ## License
 
