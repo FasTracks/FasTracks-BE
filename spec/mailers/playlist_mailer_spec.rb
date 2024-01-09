@@ -53,4 +53,8 @@ RSpec.describe PlaylistMailer do
 
     SpotifyFacade.generate_spotify_playlist(parsed_user[:id], ["spotify:track:1234567890"], "test playlist")
   end
+
+  it "can send an email" do
+    
+  end
 end

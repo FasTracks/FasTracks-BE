@@ -21,8 +21,8 @@ class SpotifyFacade
     # returns {status: ###, data: <playlist JSON>}
 
     playlist_info = SpotifyApiService.get_playlist(token, playlist_id)
-    require 'pry'; binding.pry
-    #send playlist email to user
+
+    # send playlist email to user, with email and playlist link from above
     PlaylistSenderJob.perform_async(user_info[:data][:email], playlist_info[:data][:external_urls][:spotify])
 
     return playlist_info
