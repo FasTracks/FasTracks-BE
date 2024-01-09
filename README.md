@@ -1,27 +1,10 @@
-# README
+# FasTracks README
+FasTracks provides a streamlined approach to workout playlist generation after answering simple questions such as genre preference and workout type.  A playlist is optimized based on bpm, danceability, and similar metadata based on user preference.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The project is following service-oriented architecture (SOA) and is divided into two different repository:
+  - [FasTracks-Frontend](https://github.com/FasTracks/FasTracks-FE)
+  - [Backend-Backend](https://github.com/FasTracks/FasTracks-BE)
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
 # FasTracks BE
 
 This application consists of two repositories that utilize Spotify's API to create playlists for workouts. I don’t like working out, but it’s more fun and I have a better workout when I have a good playlist. But I don’t always like making playlists either. 
