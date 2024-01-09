@@ -4,6 +4,7 @@ class PlaylistMailer < ApplicationMailer
     @playlist_link = playlist_link
 
     mail( :to => @email,
-    :subject => 'Open this message for your FasTracks playlist.' )
+    :subject => 'Open this message for your FasTracks playlist.',
+    :content_type => "text/html")
   end
 end
