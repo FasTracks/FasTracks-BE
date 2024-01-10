@@ -18,9 +18,9 @@ jobs:
           name: "Say hello"
           command: "echo Hello, World!"
       - run:
-          name: Check ruby version
+          name: List files
           command: |
-            ruby -v
+            ls -a
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
