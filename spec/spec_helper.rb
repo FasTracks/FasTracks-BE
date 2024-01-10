@@ -90,6 +90,5 @@ RSpec.configure do |config|
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
 
-  # storing test results
-  config.add_formatter 'RspecJunitFormatter', '/tmp/test-results/rspec.xml'
+  
 end
