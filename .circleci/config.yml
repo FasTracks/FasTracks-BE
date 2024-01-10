@@ -19,7 +19,7 @@ jobs:
           command: bundle install
       - run:
           name: bers
-          command: bundle exec respec
+          command: bin/rails respec
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
