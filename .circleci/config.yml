@@ -20,6 +20,12 @@ jobs:
       - run:
           name: Bundle Install
           command: bundle install
+      - run:
+          name: Rails DB Init
+          command: bundle exec rails db:drop,create
+      - run:
+          name: bers
+          command: bundle exec respec
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
