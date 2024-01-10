@@ -18,9 +18,6 @@ jobs:
           name: Bundle Install
           command: bundle install
       - run:
-          name: Rails DB Init
-          command: bundle exec rails db:create
-      - run:
           name: bers
           command: bundle exec respec
 
