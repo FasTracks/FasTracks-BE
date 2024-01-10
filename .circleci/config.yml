@@ -18,9 +18,8 @@ jobs:
           name: "Say hello"
           command: "echo Hello, World!"
       - run:
-          name: List files
-          command: |
-            ls -a
+          name: Bundle Install
+          command: bundle install
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
