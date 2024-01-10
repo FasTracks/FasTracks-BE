@@ -5,25 +5,77 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
-  say-hello:
+  build:
     # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/configuration-reference/#executor-job
+    
+    # Primary container image where all commands run
     docker:
-      - image: cimg/ruby:3.2.2-browsers
+      - image: cimg/ruby:2.6-node
+        environment:
+          RAILS_ENV: test
+          PGHOST: 127.0.0.1
+          PGUSER: root
+
+    # Service container image available at `host: localhost`
+      - image: cimg/postgres:14.0
+        environment:
+          POSTGRES_USER: testuser
+          POSTGRES_DB: FasTracks_BE_test
+    
+
     # Add steps to the job
     # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
       - checkout
+      
+      # Restore bundle cache
+      - restore_cache:
+          keys:
+            - rails-demo-{{ checksum "Gemfile.lock" }}
+            - rails-demo-
+            
+      # Bundle install dependencies
       - run:
-          name: Bundle Install
-          command: bundle install
+          name: Install dependencies
+          command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs 4 --retry 3
+
+      - run: sudo apt install -y postgresql-client || true
+      
+      # Store bundle cache
+      - save_cache:
+          key: rails-demo-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
       - run:
-          name: bers
-          command: bin/rails respec
+          name: Database Setup
+          command: |
+            bundle exec rake db:create
+            # bundle exec rake db:structure:load
+
+      - run:
+          name: Parallel RSpec
+          command: bundle exec rspec
+
+      # Save artifacts
+      - store_test_results:
+          path: /tmp/test-results
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
   say-hello-workflow:
     jobs:
-      - say-hello
+      - build
+
+
+
+      
+
+      
+
+      
+
+      
+
