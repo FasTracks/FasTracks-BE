@@ -89,4 +89,7 @@ RSpec.configure do |config|
   #   # test failures related to randomization by passing the same `--seed` value
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
+
+  # storing test results
+  config.add_formatter 'RspecJunitFormatter', '/tmp/test-results/rspec.xml'
 end

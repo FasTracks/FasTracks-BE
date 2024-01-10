@@ -34,6 +34,11 @@ jobs:
           keys:
             - rails-demo-{{ checksum "Gemfile.lock" }}
             - rails-demo-
+
+      # Create the directory for test results
+      - run:
+          name: Create Test Results Directory
+          command: mkdir -p /tmp/test-results
             
       # Bundle install dependencies
       - run:
@@ -51,7 +56,7 @@ jobs:
       - run:
           name: Database Setup
           command: |
-            if ! psql -U $POSTGRES_USER -tc "SELECT 1 FROM pg_database WHERE datname = '$POSTGRES_DB'" | grep -q 1; then
+            if ! psql -U $POSTGRES_USER -d template1 -c "SELECT 1 FROM pg_database WHERE datname = '$POSTGRES_DB'" | grep -q 1; then
               bundle exec rake db:create
             fi
 
