@@ -57,7 +57,8 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: FasTracks_BE_test
+  database: <%= ENV['POSTGRES_DB'] || "FasTracks_BE_test" %>
+  username: <%= ENV['POSTGRES_USER'] || ENV['USER'] || ENV['USERNAME'] %>
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
