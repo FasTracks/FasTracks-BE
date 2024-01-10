@@ -15,14 +15,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
-      - run:
           name: Bundle Install
           command: bundle install
       - run:
           name: Rails DB Init
-          command: bundle exec rails db:drop,create
+          command: bundle exec rails db:{create}
       - run:
           name: bers
           command: bundle exec respec
