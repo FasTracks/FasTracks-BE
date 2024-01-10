@@ -61,18 +61,19 @@ jobs:
             fi
 
 
+
       - run:
           name: Parallel RSpec
           command: bundle exec rspec
 
       # Save artifacts
-      - store_test_results:
-          path: /tmp/test-results
+#      - store_test_results:
+#          path: /tmp/test-results
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  main-workflow:
     jobs:
       - build
 
