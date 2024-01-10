@@ -9,8 +9,8 @@ jobs:
     # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/configuration-reference/#executor-job
     
-    # Primary container image where all commands run
     docker:
+      # Primary container image where all commands run
       - image: cimg/ruby:3.2.2-browsers
         environment:
           RAILS_ENV: test
@@ -59,6 +59,7 @@ jobs:
             if ! psql -U $POSTGRES_USER -d template1 -c "SELECT 1 FROM pg_database WHERE datname = '$POSTGRES_DB'" | grep -q 1; then
               bundle exec rake db:create
             fi
+
 
       - run:
           name: Parallel RSpec
