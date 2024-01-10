@@ -15,7 +15,6 @@ jobs:
         environment:
           RAILS_ENV: test
           PGHOST: 127.0.0.1
-          PGUSER: FasTracks_BE
 
     # Service container image available at `host: localhost`
       - image: cimg/postgres:14.0
