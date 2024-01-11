@@ -70,8 +70,7 @@ A `POST` request to the FasTracks BE playlist endpoint results in four calls fro
   - `GET` `/recommendations` sends the playlist's song preferences including BPM, Genre, and count. Among other data it returns each track's unique URI.
   - `POST` `/playlists/<PLAYLIST_ID>/tracks` the track URI's are sent as an array, and the playlist details are returned.
 
-Each of these requests includes the Auth code in the header. For examples of the returns of each of these, visit this [folder](https://github.com/FasTracks/FasTracks-BE/tree/main/spec/fixtures) of the FasTracks BE repo. 
- 
+Each of these requests includes the Auth code in the header. For examples of the returns of each of these requests, visit this [folder](https://github.com/FasTracks/FasTracks-BE/tree/main/spec/fixtures) of the FasTracks BE repo. 
 
 ### Installing
 
@@ -111,19 +110,61 @@ curl -X POST "https://accounts.spotify.com/api/token" \
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
+Follow commands below to run the app test suite. 
+
+`bundle exec rspec`
 
 ### Sample Tests
 
-Explain what these tests test and why
+See below for an example test from our suite. This is part of the `spotify_facade_spec` that can be found under the `spec/facades` directory in the repo.
 
-    Give an example
+Tests below include many of the pivotal operations of our application, including: 
+- Retrieving User ID
+- Creating a playlist for the user
+- Finding songs that match the workout
+- Populating the playlist
 
-### Style test
+```
+describe "::generate_spotify_playlist" do
+      before(:each) do
+        user_response = File.read("spec/fixtures/user/user.json")
+        # Get user id
+        stub_request(:get, "https://api.spotify.com/v1/me")
+          .with(headers: {"Authorization" => "Bearer 1234"})
+          .to_return(status: 200, body: {id: "12345"}.to_json, headers: {})
+        # Create playlist
+        stub_request(:post, "https://api.spotify.com/v1/users/12345/playlists")
+          .with(
+            headers: {"Authorization" => "Bearer 1234", "Content-Type" => "application/json"},
+            body: "{\"name\":\"FT HIIT Pop\",\"public\":true,\"description\":\"Playlist created by FasTracks on Spotify API\"}"
+          )
+          .to_return(status: 201, body: {id: "testID"}.to_json, headers: {})
+        # Add tracks to playlist
+        stub_request(:post, "https://api.spotify.com/v1/playlists/testID/tracks")
+          .with(
+            headers: {"Authorization" => "Bearer 1234", "Content-Type" => "application/json"},
+            body: "{\"uris\":[\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\"]}"
+          )
+          .to_return(status: 201, body: "".to_json, headers: {})
+      end
 
-Checks if the best practices and the right coding style has been used.
+      it "gets a user_id, creates a playlist, and adds tracks to it" do
+        playlist = File.read("spec/fixtures/playlists/get_playlist.json")
+        
+        stub_request(:get, "https://api.spotify.com/v1/playlists/testID")
+        .with(
+          headers: {"Authorization" => "Bearer 1234"}
+          )
+        .to_return(status: 200, body: playlist, headers: {})
 
-    Give an example
+        results = SpotifyFacade.generate_spotify_playlist("1234", ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh"], "FT HIIT Pop")
+
+        expect(results[:status]).to eq(200)
+        expect(results[:data]).to be_a(Hash)
+        expect(results[:data]).to have_key(:id)
+      end
+    end
+```
 
 ## Deployment
 
