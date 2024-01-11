@@ -42,9 +42,28 @@ Requirements for the software and other tools to build, test and push
 - Ruby 3.2.2
 - Spotify API V1
 
-### Notes on Data Flow
+## Notes on Data Flow
 
-*insert api calls and endpoints here*
+### FasTracks FE x FasTracks FE
+
+FasTracks BE recieves the user's auth token and playlist preferences from FasTracks FE in the parameters of the POST request to the endpoint `:
+
+`HTTP://<backendurl/path>?code=<USER_ACCESS_TOKEN>&genre=<SELECTED_GENRE>&workout=<SELECTED_WORKOUT>`
+
+And FasTracks BE Returns playlist details to FasTracks FE including:
+ - Playlist name
+ - 
+
+The auth token and workout preferences are then handled by the `playlist_facade` and `playlist_controller`, which send an appropriate set of requests to Spotify:
+- The users `user_id` is retrieved 
+- A new, empty playlist is created for the user by sending a POST request with the following format:
+  ```
+  {
+    "name": "FasTracks <SELECTED_WORKOUT> <SELECTED_GENRE>",
+    "description": "",
+    "public": false
+}
+```
 
 ### Installing
 
@@ -119,7 +138,7 @@ Contributions are welcome and can be submitted by pull request.
 
 ## Versioning
 
-The current version of our application is live here on github. 
+The current version (V1) of our application is live here on github. 
 
 ## Authors
 
