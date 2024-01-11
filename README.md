@@ -18,11 +18,11 @@ The fastest way to start working out using FasTracks is to visit our deployed ap
 If you would like to run the application locally, you will need Rails 7.X.X and to clone both [FasTracks-FE](https://github.com/FasTracks/FasTracks-FE) and [FasTracks-BE](https://github.com/FasTracks/FasTracks-BE), since the application follows service-oriented architecture. Within each repo, follow the steps below. 
 
 1. `bundle install`
-2. `rails db:{drop,create,migrate,seed}`
-3. `bundle exec rspec`
-4. `rails s`
+2. `rails db:{drop,create}`
+3. `bundle exec rspec` -- to see TDD in action
+4. `rails server`
 
-Then, in your browser, visit `localhost:5000` and follow the prompts on screen. 
+Then, in your browser, visit `localhost:3000` and follow the prompts on screen. 
 
 *Due to development constraints from Spotify, FasTracks is currently limited to invite-only users. Please message one of our contributors with to be added to our list of approved users. Please be sure to include the email address associated with your Spotify account. Alternatively, users may create their own app through [Spotify's developer portal](https://developer.spotify.com/documentation/web-api/concepts/apps) and reconfigure the Client ID and Client Secret in their local copy of the FE repo.*
 
@@ -34,8 +34,8 @@ However, if you prefer to get your hands dirty and understand our app, feel free
 
 - Ruby on Rails Applications
 - Service oriented architecture
-- Spotify API
 - Oauth 2.0
+- Spotify API
 
 Requirements for the software and other tools to build, test and push 
 - Rails 7.X
@@ -46,7 +46,7 @@ Requirements for the software and other tools to build, test and push
 
 ### FasTracks FE x FasTracks FE
 
-Only one endpoint is exposed for FasTracks BE: `/api/v1/playlists`. With proper authentication and playlist criteria, a playlist JSON is returned. 
+Only one endpoint is exposed for FasTracks BE: `/api/v1/playlists`. The BE receives proper authentication and playlist criteria, an BE makes a `POST` request to the Spotify API and a playlist JSON is returned. 
 
 FasTracks FE sends the user's auth token and playlist preferences in the parameters of the POST request to the FasTracks BE endpoint `/api/v1/playlists`
 
@@ -65,9 +65,9 @@ Visit this link for a [sample return](https://github.com/FasTracks/FasTracks-FE/
 ### FasTracks FE x [Spotify API](https://developer.spotify.com/)
 
 A `POST` request to the FasTracks BE playlist endpoint results in four calls from FasTracks BE to Spotify:
+  - `GET` `/recommendations` sends the playlist's song preferences including BPM, Genre, and count. Among other data it returns each track's unique URI.
   - `GET` `/me` retrieves the current user's details, including user ID
   - `POST` `/users/<USER_ID>/playlists` creates a new, empty playlist for the user
-  - `GET` `/recommendations` sends the playlist's song preferences including BPM, Genre, and count. Among other data it returns each track's unique URI.
   - `POST` `/playlists/<PLAYLIST_ID>/tracks` the track URI's are sent as an array, and the playlist details are returned.
 
 Each of these requests includes the Auth code in the header. For examples of the returns of each of these requests, visit this [folder](https://github.com/FasTracks/FasTracks-BE/tree/main/spec/fixtures) of the FasTracks BE repo. 
@@ -78,12 +78,8 @@ Each of these requests includes the Auth code in the header. For examples of the
   - [FasTracks-Frontend](https://github.com/FasTracks/FasTracks-FE) 
   - [FasTracks-Backend](https://github.com/FasTracks/FasTracks-BE) (you are here)
 
-Ensure to install gems; this project uses bootstrap for mobile first design
-
 `bundle install`<br>
 `rails db:{create,migrate}`<br>
-`rails dev:cache`
-`update .env file `
 
 Gems Included: 
 
@@ -97,15 +93,8 @@ Gems Included:
 - gem "webmock"
 - gem "vcr"
 
-
 End with an example of getting some data out of the system or using it
 for a little demo
-
-Request an access token:
-
-curl -X POST "https://accounts.spotify.com/api/token" \
-     -H "Content-Type: application/x-www-form-urlencoded" \
-     -d "grant_type=client_credentials&client_id=your-client-id&client_secret=your-client-secret"
 
 
 ## Running the tests
@@ -176,10 +165,11 @@ This project is deployed using heroku [here](https://fastracks-62267ab898ea.hero
 
 - Spotify API
 - Ruby on Rails
+- Faraday
 - Webmock
 
 <img src="https://mikewilliamson.files.wordpress.com/2010/05/rails_on_ruby.jpg" alt="drawing" width="75"/>
-<img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Green.png" width="250"/>
+<img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Green.png" width="75"/>
 
 ## Contributing
 
