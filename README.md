@@ -125,7 +125,7 @@ Tests below include many of the pivotal operations of our application, including
 - Populating the playlist
 
 ```
-describe "::generate_spotify_playlist" do
+    describe "::generate_spotify_playlist" do
       before(:each) do
         user_response = File.read("spec/fixtures/user/user.json")
         # Get user id
