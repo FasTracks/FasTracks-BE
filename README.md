@@ -46,24 +46,32 @@ Requirements for the software and other tools to build, test and push
 
 ### FasTracks FE x FasTracks FE
 
-FasTracks BE recieves the user's auth token and playlist preferences from FasTracks FE in the parameters of the POST request to the endpoint `:
+Only one endpoint is exposed for FasTracks BE: `/api/v1/playlists`. With proper authentication and playlist criteria, a playlist JSON is returned. 
 
-`HTTP://<backendurl/path>?code=<USER_ACCESS_TOKEN>&genre=<SELECTED_GENRE>&workout=<SELECTED_WORKOUT>`
+FasTracks FE sends the user's auth token and playlist preferences in the parameters of the POST request to the FasTracks BE endpoint `/api/v1/playlists`
 
-And FasTracks BE Returns playlist details to FasTracks FE including:
+Example Request: `HTTP://<backendurl/path>?code=<USER_ACCESS_TOKEN>&genre=<SELECTED_GENRE>&workout=<SELECTED_WORKOUT>`
+
+FasTracks BE then returns playlist details to FasTracks FE in JSON Format including:
  - Playlist name
- - 
+ - Playlist Spotify URL
+ - Songs Album Artwork URL
+ - Songs track title
+ - Songs Artist
+ - Playlist song count
 
-The auth token and workout preferences are then handled by the `playlist_facade` and `playlist_controller`, which send an appropriate set of requests to Spotify:
-- The users `user_id` is retrieved 
-- A new, empty playlist is created for the user by sending a POST request with the following format:
-  ```
-  {
-    "name": "FasTracks <SELECTED_WORKOUT> <SELECTED_GENRE>",
-    "description": "",
-    "public": false
-}
-```
+Visit this link for a [sample return](https://github.com/FasTracks/FasTracks-FE/blob/main/spec/support/fixtures/fastracks/playlist.json)
+
+### FasTracks FE x [Spotify API](https://developer.spotify.com/)
+
+A `POST` request to the FasTracks BE playlist endpoint results in four calls from FasTracks BE to Spotify:
+  - `GET` `/me` retrieves the current user's details, including user ID
+  - `POST` `/users/<USER_ID>/playlists` creates a new, empty playlist for the user
+  - `GET` `/recommendations` sends the playlist's song preferences including BPM, Genre, and count. Among other data it returns each track's unique URI.
+  - `POST` `/playlists/<PLAYLIST_ID>/tracks` the track URI's are sent as an array, and the playlist details are returned.
+
+Each of these requests includes the Auth code in the header. For examples of the returns of each of these, visit this [folder](https://github.com/FasTracks/FasTracks-BE/tree/main/spec/fixtures) of the FasTracks BE repo. 
+ 
 
 ### Installing
 
