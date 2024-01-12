@@ -5,6 +5,8 @@ The project follows service-oriented architecture (SOA) and is divided into two 
   - [FasTracks-Frontend](https://github.com/FasTracks/FasTracks-FE) 
   - [FasTracks-Backend](https://github.com/FasTracks/FasTracks-BE) (you are here)
 
+FasTracks BE API fits into our projects SOA by providing the endpoint and backend logic that allows us to easily connect to any given front end service as a way of being able to quickly adapt.
+
 # FasTracks BE
 
 This application consists of two repositories that utilize Spotify's API to create playlists for workouts. I don’t like working out, but it’s more fun and I have a better workout when I have a good playlist. But I don’t always like making playlists either. 
@@ -96,6 +98,7 @@ Gems Included:
 End with an example of getting some data out of the system or using it
 for a little demo
 
+`Note on schema: YAGNI. The Backend API has intentionally been desinged to not require a database.`
 
 ## Running the tests
 
