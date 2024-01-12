@@ -95,9 +95,6 @@ Gems Included:
 - gem "webmock"
 - gem "vcr"
 
-End with an example of getting some data out of the system or using it
-for a little demo
-
 `Note on schema: YAGNI. The Backend API has intentionally been desinged to not require a database.`
 
 ## Running the tests
