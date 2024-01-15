@@ -12,13 +12,20 @@ class SpotifyFacade
   end
 
   def self.generate_spotify_playlist(token, track_uris, playlist_name)
-    user_id = SpotifyApiService.get_user(token)[:data][:id]
+    user_info = SpotifyApiService.get_user(token)
+    user_id = user_info[:data][:id]
 
     playlist_id = SpotifyApiService.create_playlist(token, user_id, playlist_name)[:data][:id]
     # this returns a snapshot id; unused
     SpotifyApiService.add_tracks_to_playlist(token, playlist_id, track_uris)
     # returns {status: ###, data: <playlist JSON>}
-    return SpotifyApiService.get_playlist(token, playlist_id)
+
+    playlist_info = SpotifyApiService.get_playlist(token, playlist_id)
+
+    # send playlist email to user, with email and playlist link from above
+    PlaylistSenderJob.perform_async(user_info[:data][:email], playlist_info[:data][:external_urls][:spotify])
+
+    return playlist_info
   end
 
   def self.convert_track_uris(tracks)
