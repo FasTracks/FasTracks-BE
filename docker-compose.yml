@@ -8,6 +8,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: FasTracks_BE_production
 
+
   web:
     build: .
     command: bash -c "bundle install && bundle exec rails server -b 0.0.0.0"
@@ -18,6 +19,7 @@ services:
     depends_on:
       - db
     environment:
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}  # Environment variable for the master key
       DATABASE_URL: postgres://postgres:password@db/FasTracks_BE_production
     entrypoint: ["bash", "-c", "rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0"]
 
