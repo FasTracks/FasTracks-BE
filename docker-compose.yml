@@ -1,12 +1,12 @@
 services:
-  # db:
-  #   image: postgres:13
-  #   volumes:
-  #     - postgres-data:/var/lib/postgresql/data
-  #   environment:
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: password
-  #     POSTGRES_DB: FasTracks_BE_production
+  db:
+    image: postgres:13
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: FasTracks_BE_production
 
   nginx:
     image: nginx:latest
