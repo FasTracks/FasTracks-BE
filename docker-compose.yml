@@ -17,9 +17,9 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro  # Your custom Nginx config
     depends_on:
-      - app
+      - web
     networks:
-      - app-network
+      - web-network
 
   web:
     build: .
@@ -37,3 +37,7 @@ services:
 
 volumes:
   postgres-data:
+
+networks:
+  web-network:
+    driver: bridge
